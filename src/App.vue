@@ -1,7 +1,8 @@
 <template>
     <div id="app">
-        <Header />
+        <Header @open-signup="showSignUpForm = true" />
         <main class="content">
+            <SignUpForm v-if="showSignUpForm" @close="showSignUpForm = false" />
             <router-view />
         </main>
         <Footer />
@@ -11,11 +12,18 @@
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import SignUpForm from './components/SignUpForm.vue'
 export default {
     name: 'App',
     components: {
         Header,
         Footer,
+        SignUpForm,
+    },
+    data(){
+      return{
+        showSignUpForm: false,
+      };
     },
 };
 </script>

@@ -20,13 +20,13 @@
 
     <!-- Funkcionalnosti u headeru -->
     <div class="header-right">
-      <button class="pages" @click="onNotifications">
+      <button class="pages">
         Log In
       </button>
-      <button class="pages" @click="onNotifications">
+      <button class="pages" @click = "$emit('open-signup')">
         Sign Up
       </button>
-      <button class="pages" @click="onNotifications">
+      <button class="pages">
         Movies
       </button>
       <button class="pages" @click="onProfile">
