@@ -2,7 +2,9 @@
   <header class="app-header">
     <!-- Logo -->
     <div class="header-left">
-      <h1 class="logo">MovieManiacs</h1>
+      <h1 class="logo">
+        <span class="movie">Movie</span><span class="maniacs">Maniacs</span>
+      </h1>
     </div>
 
     <!-- Search bar -->
@@ -20,7 +22,7 @@
 
     <!-- Funkcionalnosti u headeru -->
     <div class="header-right">
-      <button class="pages">
+      <button class="pages" @click = "$emit('open-login')">
         Log In
       </button>
       <button class="pages" @click = "$emit('open-signup')">
@@ -75,6 +77,20 @@ export default {
 
 .header-left {
   flex: 0 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.logo .movie {
+  color: #fff; /* belo */
+}
+
+.logo .maniacs {
+  color: #1db954; /* zeleno kao dugmad */
 }
 
 .header-center {
