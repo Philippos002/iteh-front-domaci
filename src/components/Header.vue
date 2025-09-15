@@ -32,7 +32,7 @@
       <div class="profile-menu-wrapper" @click="onProfile">
         <img src="../img/profil.png" alt="Profil" class="profile-icon" />
         <!-- Dropdown menu -->
-        <div v-if="showProfileMenu" class="profile-dropdown">
+        <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
           <router-link class="dropdown-item" to="/profile">Profil</router-link>
           <button class="dropdown-item" @click="logout">Odjavi se</button>
         </div>
@@ -43,14 +43,20 @@
 
 <script>
 import router from '@/router';
+import { useAuthStore } from "@/stores/auth";
+import axios from "axios";
 
 export default {
   name: "AppHeader",
   data() {
     return {
       searchQuery: "",
-      showProfileMenu: false
+      showProfileMenu: false,
     };
+  },
+  setup() {
+    const auth = useAuthStore();
+    return { auth };
   },
   methods: {
     onSearch() {
@@ -60,8 +66,16 @@ export default {
       console.log("Klik na profil");
       this.showProfileMenu = !this.showProfileMenu;
     },
-    logout(){
-      console.log("Odjavi se");
+    logout() {
+      const auth = useAuthStore();
+      axios.post("http://localhost/backend/logout.php", {}, { withCredentials: true })
+        .then(() => {
+          auth.logout();
+          this.$router.push("/log-in");
+        })
+        .catch((error) => {
+          console.error("Greška pri odjavi:", error);
+        });
     }
   },
 };
@@ -159,11 +173,12 @@ export default {
 
 .profile-dropdown {
   position: absolute;
-  top: 80px; /* distance from icon */
+  top: 80px;
+  /* distance from icon */
   right: 0;
   background-color: #2b2b2b;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   min-width: 6vw;
@@ -203,7 +218,8 @@ img {
 }
 
 
-.profile-menu-wrapper, .profile-icon{
+.profile-menu-wrapper,
+.profile-icon {
   height: 3vh;
   width: 3vw;
 }

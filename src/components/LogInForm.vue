@@ -3,18 +3,22 @@
     <div class="login-container" @click.stop>
       <h2 class="login-title">Prijava</h2>
 
-      <form class="login-form">
+      <form class="login-form" @submit.prevent="loginUser">
         <!-- Username -->
         <div class="form-group">
           <label for="username">Korisničko ime</label>
-          <input type="text" id="username" placeholder="Unesite svoje korisničko ime..." />
+          <input type="text" id="username" v-model="username" placeholder="Unesite svoje korisničko ime..." />
         </div>
 
         <!-- Password -->
         <div class="form-group">
           <label for="password">Šifra</label>
-          <input type="password" id="password" placeholder="Unesite svoju šifru..." />
+          <input type="password" id="password" v-model="password" placeholder="Unesite svoju šifru..." />
         </div>
+
+
+        <p v-if="loginError" class="error">{{ loginError }}</p>
+
 
         <!-- Button -->
         <button type="submit" class="login-button">Prijavi se</button>
@@ -24,18 +28,67 @@
 </template>
 
 <script>
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
 export default {
   name: "LoginForm",
+  data() {
+    return {
+      username: "",
+      password: "",
+      loginError: ""
+    }
+  },
   methods: {
     handleOverlayClick() {
       this.$emit("close");
     },
+    async loginUser() {
+      this.loginError = "";
+
+      if (!this.username || !this.password) {
+        this.loginError = "Molimo unesite korisničko ime i šifru.";
+        return;
+      }
+
+      try {
+        // Pozivanje PHP backend servisa
+        const response = await axios.post(
+          "http://localhost/myapp/login.php",
+          {
+            username: this.username,
+            password: this.password
+          },
+          { withCredentials: true }
+        );
+
+        if (response.data.success) {
+          this.auth.login(response.data.user);
+          this.$router.push("/");
+        } else {
+          this.loginError = response.data.message;
+        }
+      } catch (error) {
+        console.error("Greška pri prijavi:", error);
+        this.loginError = "Došlo je do greške prilikom prijave. Pokušajte kasnije.";
+      }
+    }
   },
+  setup() {
+    const auth = useAuthStore();
+    return { auth };
+  },
+
 };
 </script>
 
 <style scoped>
-/* overlay */
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+}
+
 .login-overlay {
   position: relative;
   width: 100vw;

@@ -3,29 +3,32 @@
     <div class="signup-container" @click.stop>
       <h2 class="signup-title">Registracija</h2>
 
-      <form class="signup-form">
+      <form class="signup-form" @submit.prevent="registerUser">
         <!-- Email -->
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Unesite svoju email adresu..." />
+          <input type="email" id="email" v-model="email" placeholder="Unesite svoju email adresu..." />
+          <p v-if="emailError" class="error">{{ emailError }}</p>
         </div>
 
         <!-- Username -->
         <div class="form-group">
           <label for="username">Korisničko ime</label>
-          <input type="text" id="username" placeholder="Unesite svoje korisničko ime..." />
+          <input type="text" id="username" v-model="username" placeholder="Unesite svoje korisničko ime..." />
+          <p v-if="usernameError" class="error">{{ usernameError }}</p>
         </div>
 
         <!-- Password -->
         <div class="form-group">
           <label for="password">Šifra</label>
-          <input type="password" id="password" placeholder="Unesite svoju šifru..." />
+          <input type="password" id="password" v-model="password" placeholder="Unesite svoju šifru..." />
+          <p v-if="passwordError" class="error">{{ passwordError }}</p>
         </div>
 
         <!-- Checkboxes -->
         <div class="checkbox-group">
           <label>
-            <input type="checkbox" class="custom-checkbox" />
+            <input type="checkbox" class="custom-checkbox" v-model="isAdult" />
             Potvrđujem da imam više od 18 godina
           </label>
         </div>
@@ -38,18 +41,85 @@
 </template>
 
 <script>
+import axios from "axios";
+import { useAuthStore } from "@/stores/auth";
+
 export default {
+  data() {
+    return {
+      email: "",
+      username: "",
+      password: "",
+      isAdult: false,
+      emailError: "",
+      passwordError: "",
+      usernameError: ""
+    }
+  },
   name: "SignUpForm",
   methods: {
     handleOverlayClick() {
       this.$emit("close");
     },
+    async registerUser() {
+      this.emailError = "";
+      this.passwordError = "";
+      this.usernameError = "";
+      // Regex
+      const emailRegex = /^[A-Za-z0-9._%+-]{2,}@(gmail|hotmail)\.com$/;
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      const usernameRegex = /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d]{6,}$/;
+
+      if (!emailRegex.test(this.email)) {
+        this.emailError = "Email mora biti u formatu: korisnik@gmail.com ili korisnik@hotmail.com";
+        return;
+      }
+
+      if (!usernameRegex.test(this.username)) {
+        this.usernameError = "Korisničko ime mora imati minimum 6 karaktera, jedno veliko i jedno malo slovo.";
+        return;
+      }
+
+      if (!passwordRegex.test(this.password)) {
+        this.passwordError = "Šifra mora imati bar 8 karaktera, jedno veliko slovo, jedno malo slovo, jedan broj i jedan specijalan znak.";
+        return;
+      }
+
+      if (!this.isAdult) {
+        alert("Morate potvrditi da imate više od 18 godina.");
+        return;
+      }
+
+      const auth = useAuthStore();
+
+      try {
+        const response = await axios.post("http://localhost/myapp/signup.php", {
+          email: this.email,
+          username: this.username,
+          password: this.password
+        }, { withCredentials: true });
+
+        if (response.data.success) {
+          auth.login({ username: this.username, email: this.email });
+          alert("Uspešno ste registrovani i ulogovani!");
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Došlo je do greške prilikom registracije.");
+      }
+    }
   },
 };
 </script>
 
 <style scoped>
-/* overlay preko celog ekrana */
+.error {
+  color: red;
+  font-size: 0.8rem;
+}
+
 .signup-overlay {
   position: relative;
   width: 100vw;
@@ -59,6 +129,7 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  pointer-events: none;
 }
 
 /* glavni box */
