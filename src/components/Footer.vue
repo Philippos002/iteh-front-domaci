@@ -3,8 +3,8 @@
     <div class="footer-content">
       
       <div class="footer-links">
-        <a href="#about">About Us</a>
-        <a href="#help">Help</a>
+        <a href="about-us">About Us</a>
+        <a href="help">Help</a>
       </div>
 
       
@@ -51,28 +51,31 @@ export default {
   background-color: #1c1c1c;
   color: #fff; 
   padding: 0.5rem 1rem;
-  width: 100vw;
+  min-width: 100vw;
+  display: flex;
+  min-height: 20vh;
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  max-width: 60vw;
   margin: 0 auto;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .footer-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .footer-links a {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   transition: color 0.3s;
   background: none;   
 }
@@ -82,14 +85,14 @@ export default {
 }
 
 .footer-center {
-  font-size: 0.85rem;
+  font-size: 1rem;
   text-align: center;
   flex: 1;
 }
 
 .footer-icons {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .footer-icons a {
@@ -105,8 +108,8 @@ export default {
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 3vw;
+  height: 3vh;
   display: block;     /* uklanja višak prostora oko SVG-a */
 }
 </style>

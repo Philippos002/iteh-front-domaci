@@ -3,7 +3,7 @@
     <!-- Logo -->
     <div class="header-left">
       <h1 class="logo">
-        <span class="movie">Movie</span><span class="maniacs">Maniacs</span>
+        <router-link to="/" class="movie-maniacs-logo-router"><span class="movie">Movie</span><span class="maniacs">Maniacs</span></router-link>
       </h1>
     </div>
 
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import router from '@/router';
+
 export default {
   name: "AppHeader",
   data() {
@@ -59,20 +61,19 @@ export default {
 
 <style scoped>
 .app-header {
-  position: fixed;         
-  top: 0;
-  left: 0;
-  width: 100%;             
-  height: 60px;            
+  position: relative;
+  min-width: 100%;             
+  height: 10vh;            
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #1f1f1f;
-  padding: 0 1.5rem;       
+  padding: 0 2rem;       
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   z-index: 1000;           
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .header-left {
@@ -80,7 +81,7 @@ export default {
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   margin: 0;
 }
@@ -97,7 +98,6 @@ export default {
   flex: 1;
   display: flex;
   justify-content: center;
-  margin: 0 1rem;
 }
 
 .search-bar {
@@ -107,7 +107,7 @@ export default {
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
   width: 100%;              
-  max-width: 400px;
+  max-width: 20vw;
 }
 
 .search-bar input {
@@ -127,14 +127,14 @@ export default {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
+  gap: 2rem;
 }
 
 .pages {
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.25rem;
-  margin-left: 1rem;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.2s;
 }
