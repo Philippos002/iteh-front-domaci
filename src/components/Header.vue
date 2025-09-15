@@ -3,7 +3,8 @@
     <!-- Logo -->
     <div class="header-left">
       <h1 class="logo">
-        <router-link to="/" class="movie-maniacs-logo-router"><span class="movie">Movie</span><span class="maniacs">Maniacs</span></router-link>
+        <router-link to="/" class="movie-maniacs-logo-router"><span class="movie">Movie</span><span
+            class="maniacs">Maniacs</span></router-link>
       </h1>
     </div>
 
@@ -11,12 +12,7 @@
     <div class="header-center">
       <div class="search-bar">
         <i class="icon-search"><img src="../img/lupa.png" alt=""></i>
-        <input
-          type="text"
-          placeholder="Pretraži film..."
-          v-model="searchQuery"
-          @keyup.enter="onSearch"
-        />
+        <input type="text" placeholder="Pretraži film..." v-model="searchQuery" @keyup.enter="onSearch" />
       </div>
     </div>
 
@@ -28,12 +24,19 @@
       <router-link class="pages" to="/sign-in">
         Registruj se
       </router-link>
-      <router-link class="pages">
+      <router-link class="pages" to="/movie-list">
         Filmovi
       </router-link>
-      <router-link class="pages" to="/">
-        <img src="../img/profil.png" alt="">
-      </router-link>
+
+      <!-- Profile Icon with dropdown -->
+      <div class="profile-menu-wrapper" @click="onProfile">
+        <img src="../img/profil.png" alt="Profil" class="profile-icon" />
+        <!-- Dropdown menu -->
+        <div v-if="showProfileMenu" class="profile-dropdown">
+          <router-link class="dropdown-item" to="/profile">Profil</router-link>
+          <button class="dropdown-item" @click="logout">Odjavi se</button>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -46,6 +49,7 @@ export default {
   data() {
     return {
       searchQuery: "",
+      showProfileMenu: false
     };
   },
   methods: {
@@ -54,7 +58,11 @@ export default {
     },
     onProfile() {
       console.log("Klik na profil");
+      this.showProfileMenu = !this.showProfileMenu;
     },
+    logout(){
+      console.log("Odjavi se");
+    }
   },
 };
 </script>
@@ -62,16 +70,16 @@ export default {
 <style scoped>
 .app-header {
   position: relative;
-  min-width: 100%;             
-  height: 10vh;            
+  min-width: 100%;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #1f1f1f;
-  padding: 0 5rem;       
+  padding: 0 5rem;
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  z-index: 1000;           
+  z-index: 1000;
   box-sizing: border-box;
   flex-wrap: wrap;
 }
@@ -87,11 +95,13 @@ export default {
 }
 
 .logo .movie {
-  color: #fff; /* belo */
+  color: #fff;
+  /* belo */
 }
 
 .logo .maniacs {
-  color: #1db954; /* zeleno kao dugmad */
+  color: #1db954;
+  /* zeleno kao dugmad */
 }
 
 .header-center {
@@ -106,7 +116,7 @@ export default {
   background-color: #2b2b2b;
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
-  width: 100%;              
+  width: 100%;
   max-width: 20vw;
 }
 
@@ -139,17 +149,62 @@ export default {
   transition: color 0.2s;
 }
 
+.profile-menu-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 80px; /* distance from icon */
+  right: 0;
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  min-width: 6vw;
+  z-index: 1001;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #fff;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+
+}
+
+.dropdown-item:hover {
+  background-color: #1db954;
+  color: #fff;
+}
+
 .pages:hover {
   color: #1db954;
 }
 
 img {
-    height: 14px;
-    width: 14px;
+  height: 14px;
+  width: 14px;
 }
 
 .pages img {
-    height: 35px;
-    width: 35px;
+  height: 35px;
+  width: 35px;
+}
+
+
+.profile-menu-wrapper, .profile-icon{
+  height: 3vh;
+  width: 3vw;
 }
 </style>

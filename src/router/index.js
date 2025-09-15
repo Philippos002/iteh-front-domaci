@@ -11,6 +11,7 @@ import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import SignUpForm from "@/components/SignUpForm.vue";
 import LogInForm from "@/components/LogInForm.vue";
+import MovieList from "@/views/MovieList.vue";
 
 
 
@@ -27,6 +28,7 @@ const routes = [
   { path: '/movie', name: 'Movie', component: MoviePage},
   { path: '/sign-up-form', name: 'SignUpForm', component: SignUpForm},
   { path: '/log-in-form', name: 'LogInForm', component: LogInForm},
+  { path: '/movie-list', name: 'MovieList', component: MovieList},
 ];
 
 const router = createRouter({

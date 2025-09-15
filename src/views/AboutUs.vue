@@ -63,7 +63,6 @@ export default {
 .about-us-container {
     display: flex;
     flex-direction: column;
-
 }
 
 .about-us-content {
