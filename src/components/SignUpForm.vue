@@ -1,7 +1,7 @@
 <template>
   <div class="signup-overlay" @click="handleOverlayClick">
     <div class="signup-container" @click.stop>
-      <h2 class="signup-title">Sign Up</h2>
+      <h2 class="signup-title">Registracija</h2>
 
       <form class="signup-form">
         <!-- Email -->
@@ -12,13 +12,13 @@
 
         <!-- Username -->
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">Korisničko ime</label>
           <input type="text" id="username" placeholder="Choose a username" />
         </div>
 
         <!-- Password -->
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Šifra</label>
           <input type="password" id="password" placeholder="Enter your password" />
         </div>
 
@@ -26,19 +26,12 @@
         <div class="checkbox-group">
           <label>
             <input type="checkbox" class="custom-checkbox" />
-            I confirm that I am over 18 years old
-          </label>
-        </div>
-
-        <div class="checkbox-group">
-          <label>
-            <input type="checkbox" class="custom-checkbox" />
-            I agree with the Privacy Policy
+            Potvrđujem da imam više od 18 godina
           </label>
         </div>
 
         <!-- Button -->
-        <button type="submit" class="signup-button">Sign Up</button>
+        <button type="submit" class="signup-button">Registruj se</button>
       </form>
     </div>
   </div>
@@ -58,11 +51,9 @@ export default {
 <style scoped>
 /* overlay preko celog ekrana */
 .signup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 80vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;

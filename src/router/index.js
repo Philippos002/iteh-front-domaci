@@ -9,6 +9,8 @@ import ProfilePage from "@/views/ProfilePage.vue";
 import SignInPage from "@/views/SignInPage.vue";
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
+import SignUpForm from "@/components/SignUpForm.vue";
+import LogInForm from "@/components/LogInForm.vue";
 
 
 
@@ -23,6 +25,8 @@ const routes = [
   { path: '/profile', name: 'Profile', component: ProfilePage},
   // Ovde ce biti ruta /movie-naziv-filma kasnije akda budemo imali filmove (iz baze naravno)
   { path: '/movie', name: 'Movie', component: MoviePage},
+  { path: '/sign-up-form', name: 'SignUpForm', component: SignUpForm},
+  { path: '/log-in-form', name: 'LogInForm', component: LogInForm},
 ];
 
 const router = createRouter({

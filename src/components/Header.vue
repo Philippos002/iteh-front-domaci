@@ -23,13 +23,13 @@
     <!-- Funkcionalnosti u headeru -->
     <div class="header-right">
       <button class="pages" @click = "$emit('open-login')">
-        Log In
+        Prijavi se
       </button>
       <button class="pages" @click = "$emit('open-signup')">
-        Sign Up
+        Registruj se
       </button>
       <button class="pages">
-        Movies
+        Filmovi
       </button>
       <button class="pages" @click="onProfile">
         <img src="../img/profil.png" alt="">
@@ -68,7 +68,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   background-color: #1f1f1f;
-  padding: 0 2rem;       
+  padding: 0 5rem;       
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   z-index: 1000;           
