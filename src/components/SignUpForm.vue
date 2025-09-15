@@ -7,19 +7,19 @@
         <!-- Email -->
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email" />
+          <input type="email" id="email" placeholder="Unesite svoju email adresu..." />
         </div>
 
         <!-- Username -->
         <div class="form-group">
           <label for="username">Korisničko ime</label>
-          <input type="text" id="username" placeholder="Choose a username" />
+          <input type="text" id="username" placeholder="Unesite svoje korisničko ime..." />
         </div>
 
         <!-- Password -->
         <div class="form-group">
           <label for="password">Šifra</label>
-          <input type="password" id="password" placeholder="Enter your password" />
+          <input type="password" id="password" placeholder="Unesite svoju šifru..." />
         </div>
 
         <!-- Checkboxes -->
@@ -53,7 +53,7 @@ export default {
 .signup-overlay {
   position: relative;
   width: 100vw;
-  height: 80vh;
+  height: 70vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;

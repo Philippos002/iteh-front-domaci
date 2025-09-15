@@ -1,23 +1,23 @@
 <template>
   <div class="login-overlay" @click="handleOverlayClick">
     <div class="login-container" @click.stop>
-      <h2 class="login-title">Log In</h2>
+      <h2 class="login-title">Prijava</h2>
 
       <form class="login-form">
         <!-- Username -->
         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Enter your username" />
+          <label for="username">Korisničko ime</label>
+          <input type="text" id="username" placeholder="Unesite svoje korisničko ime..." />
         </div>
 
         <!-- Password -->
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" />
+          <label for="password">Šifra</label>
+          <input type="password" id="password" placeholder="Unesite svoju šifru..." />
         </div>
 
         <!-- Button -->
-        <button type="submit" class="login-button">Log In</button>
+        <button type="submit" class="login-button">Prijavi se</button>
       </form>
     </div>
   </div>
@@ -37,11 +37,9 @@ export default {
 <style scoped>
 /* overlay */
 .login-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 70vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;

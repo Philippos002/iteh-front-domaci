@@ -68,7 +68,7 @@ export default {
 
 .about-us-content {
     display: flex;
-    min-height: 80vh;
+    min-height: 70vh;
     flex-direction: column;
     padding: 5rem 4rem;
 }

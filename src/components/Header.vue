@@ -22,18 +22,18 @@
 
     <!-- Funkcionalnosti u headeru -->
     <div class="header-right">
-      <button class="pages" @click = "$emit('open-login')">
+      <router-link class="pages" to="log-in">
         Prijavi se
-      </button>
-      <button class="pages" @click = "$emit('open-signup')">
+      </router-link>
+      <router-link class="pages" to="/sign-in">
         Registruj se
-      </button>
-      <button class="pages">
+      </router-link>
+      <router-link class="pages">
         Filmovi
-      </button>
-      <button class="pages" @click="onProfile">
+      </router-link>
+      <router-link class="pages" to="/">
         <img src="../img/profil.png" alt="">
-      </button>
+      </router-link>
     </div>
   </header>
 </template>
