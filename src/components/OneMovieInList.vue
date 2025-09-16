@@ -44,10 +44,10 @@ export default {
   display: block;
 }
 
-/* Overlay */
+
 .overlay {
   position: absolute;
-  inset: 0; /* top, right, bottom, left = 0 */
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   opacity: 0;
   display: flex;
