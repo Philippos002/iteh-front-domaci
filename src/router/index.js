@@ -23,7 +23,7 @@ const routes = [
   { path: '/sign-in', name: 'SignIn', component: SignInPage},
   { path: '/log-in', name: 'LogIn', component: LogInPage},
   // Ovde ce biti ruta /profile-naziv-profila kasnije kada budemo imali profile (npr samo tvoj i moj) (kada se prijavis i kada kliknes na tudji profil)
-  { path: '/profile', name: 'Profile', component: ProfilePage},
+  { path: '/profile', name: 'ProfilePage', component: ProfilePage},
   // Ovde ce biti ruta /movie-naziv-filma kasnije akda budemo imali filmove (iz baze naravno)
   { path: '/movie', name: 'Movie', component: MoviePage},
   { path: '/sign-up-form', name: 'SignUpForm', component: SignUpForm},

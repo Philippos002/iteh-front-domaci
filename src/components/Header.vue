@@ -29,14 +29,20 @@
       </router-link>
 
       <!-- Profile Icon with dropdown -->
-      <div class="profile-menu-wrapper" @click="onProfile">
-        <img src="../img/profil.png" alt="Profil" class="profile-icon" />
-        <!-- Dropdown menu -->
-        <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
-          <router-link class="dropdown-item" to="/profile">Profil</router-link>
-          <button class="dropdown-item" @click="logout">Odjavi se</button>
-        </div>
-      </div>
+      <div class="profile-menu-wrapper">
+  <!-- Ikonica vodi direktno na profil -->
+  <router-link to="/profile">
+    <img src="../img/profil.png" alt="Profil" class="profile-icon" />
+  </router-link>
+
+  <!-- Strelica otvara dropdown -->
+  <div class="dropdown-toggle" @click.stop="toggleDropdown">▼</div>
+
+  <!-- Dropdown meni -->
+  <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
+    <button class="dropdown-item" @click="logout">Odjavi se</button>
+  </div>
+</div>
     </div>
   </header>
 </template>
@@ -62,10 +68,11 @@ export default {
     onSearch() {
       console.log("Pretraga:", this.searchQuery);
     },
-    onProfile() {
-      console.log("Klik na profil");
-      this.showProfileMenu = !this.showProfileMenu;
+
+    toggleDropdown() {
+    this.showProfileMenu = !this.showProfileMenu;
     },
+
     logout() {
       const auth = useAuthStore();
       axios.post("http://localhost/backend/logout.php", {}, { withCredentials: true })
@@ -217,10 +224,20 @@ img {
   width: 35px;
 }
 
-
 .profile-menu-wrapper,
 .profile-icon {
   height: 3vh;
   width: 3vw;
+}
+
+.dropdown-toggle {
+  margin-left: 0.4rem;
+  font-size: 0.9rem;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+.dropdown-toggle:hover {
+  color: #1db954;
 }
 </style>
