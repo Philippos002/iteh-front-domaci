@@ -13,7 +13,7 @@
             <p class="paragraph second-paragraph">
                 Iza ovog projekta stoje <a href="https://www.instagram.com/bogdanblagojevicc/" class="strong">Bogdan
                     Blagojević</a> i <a href="https://www.instagram.com/philippos002/" class="strong">Filip
-                    Mitic</a>,
+                    Mitić</a>,
                 studenti završne godine <a href="https://www.instagram.com/fon_bg/" class="strong">Fakulteta organizacionih nauka</a>. Kao veliki
                 ljubitelji filma,
                 želimo da publici omogućimo jednostavan i moderan način da prate nova ostvarenja, podele svoje mišljenje
