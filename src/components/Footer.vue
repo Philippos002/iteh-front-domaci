@@ -54,6 +54,7 @@ export default {
   min-width: 100vw;
   display: flex;
   min-height: 20vh;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .footer-content {

@@ -18,6 +18,9 @@
       <router-link class="pages" to="/sign-in">
         Registruj se
       </router-link>
+      <router-link class="pages" to="/add-movie">
+        Dodaj film
+      </router-link>
 
       <!-- Profile Icon with dropdown -->
       <div class="profile-menu-wrapper">
@@ -94,6 +97,7 @@ export default {
   z-index: 1000;
   box-sizing: border-box;
   flex-wrap: wrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .header-left {
