@@ -4,7 +4,7 @@
       
       <div class="footer-links">
         <a href="about-us">O nama</a>
-        <a href="help">Pomoć</a>
+        <router-link to="/help">Pomoć</router-link>
       </div>
 
       

@@ -11,6 +11,7 @@ import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import SignUpForm from "@/components/SignUpForm.vue";
 import LogInForm from "@/components/LogInForm.vue";
+import HelpPage from '@/views/Help.vue';
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -25,6 +26,7 @@ const routes = [
   { path: "/sign-up-form", name: "SignUpForm", component: SignUpForm },
   { path: "/log-in-form", name: "LogInForm", component: LogInForm },
   { path: "/movie/:title", name: "Movie", component: MoviePage, props: true},
+  { path: '/help', name: 'Help', component: HelpPage},
 ];
 
 const router = createRouter({
