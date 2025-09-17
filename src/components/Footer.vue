@@ -3,8 +3,8 @@
     <div class="footer-content">
       
       <div class="footer-links">
-        <a href="about-us">About Us</a>
-        <a href="help">Help</a>
+        <a href="about-us">O nama</a>
+        <a href="help">Pomoć</a>
       </div>
 
       

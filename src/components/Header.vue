@@ -9,12 +9,6 @@
     </div>
 
     <!-- Search bar -->
-    <div class="header-center">
-      <div class="search-bar">
-        <i class="icon-search"><img src="../img/lupa.png" alt=""></i>
-        <input type="text" placeholder="Pretraži film..." v-model="searchQuery" @keyup.enter="onSearch" />
-      </div>
-    </div>
 
     <!-- Funkcionalnosti u headeru -->
     <div class="header-right">
@@ -24,25 +18,22 @@
       <router-link class="pages" to="/sign-in">
         Registruj se
       </router-link>
-      <router-link class="pages" to="/movie-list">
-        Filmovi
-      </router-link>
 
       <!-- Profile Icon with dropdown -->
       <div class="profile-menu-wrapper">
-  <!-- Ikonica vodi direktno na profil -->
-  <router-link to="/profile">
-    <img src="../img/profil.png" alt="Profil" class="profile-icon" />
-  </router-link>
+        <!-- Ikonica vodi direktno na profil -->
+        <router-link to="/profile">
+          <img src="../img/profil.png" alt="Profil" class="profile-icon" />
+        </router-link>
 
-  <!-- Strelica otvara dropdown -->
-  <div class="dropdown-toggle" @click.stop="toggleDropdown">▼</div>
+        <!-- Strelica otvara dropdown -->
+        <div class="dropdown-toggle" @click.stop="toggleDropdown">▼</div>
 
-  <!-- Dropdown meni -->
-  <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
-    <button class="dropdown-item" @click="logout">Odjavi se</button>
-  </div>
-</div>
+        <!-- Dropdown meni -->
+        <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
+          <button class="dropdown-item" @click="logout">Odjavi se</button>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -70,7 +61,7 @@ export default {
     },
 
     toggleDropdown() {
-    this.showProfileMenu = !this.showProfileMenu;
+      this.showProfileMenu = !this.showProfileMenu;
     },
 
     logout() {
@@ -158,7 +149,7 @@ export default {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 5rem;
 }
 
 .pages {
@@ -237,6 +228,7 @@ img {
   cursor: pointer;
   user-select: none;
 }
+
 .dropdown-toggle:hover {
   color: #1db954;
 }
