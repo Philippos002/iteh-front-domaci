@@ -5,68 +5,42 @@
     <main class="add-movie-content">
       <h1 class="page-title">Dodaj novi film</h1>
 
-      <form class="add-movie-form">
-        
+      <!-- NOTE: .prevent stops default page reload and calls onSubmit -->
+      <form class="add-movie-form" @submit.prevent="onSubmit">
         <div class="form-group">
           <label for="title">Ime filma</label>
-          <input
-            type="text"
-            id="title"
-            v-model="movie.title"
-            placeholder="Unesite ime filma"
-            required
-          />
+          <input type="text" id="title" v-model.trim="movie.title" placeholder="Unesite ime filma" required />
         </div>
 
-        
         <div class="form-group">
           <label for="year">Godina</label>
-          <input
-            type="number"
-            id="year"
-            v-model="movie.year"
-            placeholder="Unesite godinu"
-            required
-          />
+          <input type="number" id="year" v-model.number="movie.year" placeholder="Unesite godinu" required />
         </div>
 
-        
         <div class="form-group">
           <label for="genre">Žanr</label>
-          <input
-            type="text"
-            id="genre"
-            v-model="movie.genre"
-            placeholder="Unesite žanr (npr. Drama, Komedija)"
-            required
-          />
+          <input type="text" id="genre" v-model.trim="movie.genre" placeholder="Unesite žanr (npr. Drama, Komedija)"
+            required />
         </div>
 
-        
         <div class="form-group">
           <label for="description">Opis</label>
-          <textarea
-            id="description"
-            v-model="movie.description"
-            placeholder="Unesite kratak opis filma"
-            rows="4"
-            required
-          ></textarea>
+          <textarea id="description" v-model.trim="movie.description" placeholder="Unesite kratak opis filma" rows="4"
+            required></textarea>
         </div>
 
-        
         <div class="form-group">
           <label for="poster">Poster filma</label>
-          <input
-            type="file"
-            id="poster"
-            @change="handlePosterUpload"
-            accept="image/*"
-          />
+          <input type="file" id="poster" @change="handlePosterUpload" accept="image/*" />
+          <small v-if="posterName">Izabrano: {{ posterName }}</small>
         </div>
 
-        
-        <button type="submit" class="submit-btn">Dodaj film</button>
+        <button type="submit" class="submit-btn" :disabled="loading">
+          {{ loading ? 'Slanje…' : 'Dodaj film' }}
+        </button>
+
+        <p v-if="error" class="state error">{{ error }}</p>
+        <p v-if="success" class="state success">{{ success }}</p>
       </form>
     </main>
 
@@ -77,6 +51,7 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import axios from "axios";
 
 export default {
   name: "AddMovie",
@@ -85,12 +60,94 @@ export default {
     return {
       movie: {
         title: "",
-        year: "",
+        year: null,
         genre: "",
         description: "",
-        poster: null,
+        // poster is handled via file input change; we keep file separately:
       },
+      posterFile: null, // File object from <input type="file">
+      posterName: "",   // UI display only
+      loading: false,
+      error: "",
+      success: "",
     };
+  },
+  methods: {
+    handlePosterUpload(event) {
+      const file = event.target.files?.[0];
+      this.posterFile = file || null;
+      this.posterName = file ? file.name : "";
+    },
+
+    async onSubmit() {
+      this.error = "";
+      this.success = "";
+
+      // Basic front-end validation
+      if (!this.movie.title || !this.movie.year || !this.movie.genre || !this.movie.description) {
+        this.error = "Molimo popunite sva obavezna polja.";
+        return;
+      }
+
+      // (Optional) extra validation
+      const year = Number(this.movie.year);
+      if (!Number.isInteger(year) || year < 1888 || year > new Date().getFullYear() + 1) {
+        this.error = "Unesite validnu godinu.";
+        return;
+      }
+
+      if (!this.posterFile) {
+        this.error = "Niste dodali poster.";
+        return;
+      }
+
+      // Build multipart/form-data payload (needed for file uploads)
+      const formData = new FormData();
+      formData.append("title", this.movie.title);
+      formData.append("year", String(year));
+      formData.append("genre", this.movie.genre);
+      formData.append("description", this.movie.description);
+      if (this.posterFile) {
+        // "poster" must match the PHP $_FILES['poster'] key you expect server-side
+        formData.append("poster", this.posterFile);
+      }
+
+      this.loading = true;
+      try {
+        // Replace with your real endpoint
+        // Example: /api/movies/create.php or /api/add_movie.php
+        const { data } = await axios.post(
+          "https://your-domain.tld/api/add_movie.php",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            // withCredentials: true, // if you need cookies/sessions
+          }
+        );
+
+        // Expecting your PHP to return JSON like: { success: true, id: 123, message: "OK" }
+        if (data?.success) {
+          this.success = data?.message || "Film je uspešno dodat.";
+          this.resetForm();
+        } else {
+          this.error = data?.message || "Došlo je do greške prilikom dodavanja filma.";
+        }
+      } catch (e) {
+        // Network / server error
+        this.error = e?.response?.data?.message || "Greška na serveru ili mreži.";
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    resetForm() {
+      this.movie = { title: "", year: null, genre: "", description: "" };
+      this.posterFile = null;
+      this.posterName = "";
+      // Optionally clear the <input type="file">:
+      const input = document.getElementById("poster");
+      if (input) input.value = "";
+    },
   },
 };
 </script>
@@ -173,5 +230,17 @@ textarea {
 
 .submit-btn:hover {
   background-color: #17a846;
+}
+
+.state.error {
+  margin-top: -0.5rem;
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.state.success {
+  margin-top: -0.5rem;
+  color: #53d769;
+  font-weight: 600;
 }
 </style>

@@ -18,7 +18,7 @@
       <router-link class="pages" to="/sign-in">
         Registruj se
       </router-link>
-      <router-link class="pages" to="/add-movie">
+      <router-link class="pages" to="/add-movie" v-if="canAddMovie">
         Dodaj film
       </router-link>
 
@@ -45,6 +45,7 @@
 import router from '@/router';
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
+import { computed } from "vue";
 
 export default {
   name: "AppHeader",
@@ -56,7 +57,8 @@ export default {
   },
   setup() {
     const auth = useAuthStore();
-    return { auth };
+    const canAddMovie = computed(() => auth.isLoggedIn && (auth.role === "admin"));
+    return { auth, canAddMovie };
   },
   methods: {
     onSearch() {

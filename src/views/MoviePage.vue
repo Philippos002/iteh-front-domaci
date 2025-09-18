@@ -18,6 +18,13 @@
                     <p class="year">{{ movie.year }}</p>
                     <p v-if="movie.genre" class="genre">{{ movie.genre }}</p>
                     <p v-if="movie.description" class="description">{{ movie.description }}</p>
+
+                    <!-- Admin-only Delete button -->
+                    <button v-if="canDelete" class="btn-danger" :disabled="deleteLoading" @click="onDeleteMovie">
+                        {{ deleteLoading ? 'Brisanje…' : 'Obriši film' }}
+                    </button>
+
+
                 </div>
             </div>
 
@@ -32,8 +39,10 @@
             </div>
 
             <div v-if="displayedComments.length" class="comments-list">
-                <PersonsComment v-for="(c, idx) in displayedComments" :key="idx" :author="c.author" :movie="c.movieName"
-                    :time="c.timeItwasCommented" :content="c.content" />
+                <PersonsComment v-for="(c, idx) in displayedComments" :key="c.id || idx" :id="c.id" :author="c.author"
+                    :movie="c.movieName" :time="c.timeItwasCommented" :content="c.content"
+                    @deleted="onCommentDeleted" />
+
             </div>
 
             <div v-else class="state muted">Još nema komentara za ovaj film.</div>
@@ -69,13 +78,14 @@ import Footer from "@/components/Footer.vue";
 import PersonsComment from "@/components/PersonsComment.vue"; // 👈 import component
 import inception from "../img/inception.jpg";
 import { useAuthStore } from "@/stores/auth";
-
+import { computed } from "vue";
 export default {
     name: "MoviePage",
     components: { Header, Footer, PersonsComment },
     setup() {
         const auth = useAuthStore();
-        return { auth };
+        const canDelete = computed(() => auth.isLoggedIn && auth.role === "admin");
+        return { auth, canDelete };
     },
     data() {
         return {
@@ -84,6 +94,7 @@ export default {
             newComment: "",
             submitLoading: false,
             submitError: "",
+            deleteLoading: false,
             // movie: null,
             movie: {
                 title: "Inception",
@@ -97,18 +108,21 @@ export default {
             // 🔽 Demo comments (replace with backend later if needed)
             comments: [
                 {
+                    id: 1,
                     author: "Bojan",
                     movieName: "Inception",
                     timeItwasCommented: "3d",
                     content: "Odličan film, treći put gledam i još uvek me oduva!"
                 },
                 {
+                    id: 2,
                     author: "Mina",
                     movieName: "Inception",
                     timeItwasCommented: "2h",
                     content: "Hans Zimmer soundtrack 🔥"
                 },
                 {
+                    id: 3,
                     author: "Nikola",
                     movieName: "The Godfather",
                     timeItwasCommented: "1w",
@@ -138,6 +152,59 @@ export default {
         },
     },
     methods: {
+        async onDeleteMovie() {
+            if (!this.movie?.title) return;
+
+            this.deleteLoading = true;
+            try {
+                // If your backend prefers DELETE with query param, you can use axios.delete
+                // Here is a POST example (common for PHP endpoints)
+                const { data } = await axios.post(
+                    "http://localhost/backend/delete_movie.php",
+                    { title: this.movie.title }, // deleting by movie title as you requested
+                    { withCredentials: true }
+                );
+
+                if (data?.success) {
+                    // success -> pop-up/alert, then route home
+                    window.alert(data?.message || "Film je uspešno obrisan.");
+                    this.$router.push("/");
+                } else {
+                    window.alert(data?.message || "Brisanje nije uspelo.");
+                }
+            } catch (e) {
+                console.error(e);
+                window.alert("Greška pri brisanju filma.");
+            } finally {
+                this.deleteLoading = false;
+            }
+        }, async onDeleteMovie() {
+            if (!this.movie?.title) return;
+
+            this.deleteLoading = true;
+            try {
+                // If your backend prefers DELETE with query param, you can use axios.delete
+                // Here is a POST example (common for PHP endpoints)
+                const { data } = await axios.post(
+                    "http://localhost/backend/delete_movie.php",
+                    { title: this.movie.title }, // deleting by movie title as you requested
+                    { withCredentials: true }
+                );
+
+                if (data?.success) {
+                    // success -> pop-up/alert, then route home
+                    window.alert(data?.message || "Film je uspešno obrisan.");
+                    this.$router.push("/");
+                } else {
+                    window.alert(data?.message || "Brisanje nije uspelo.");
+                }
+            } catch (e) {
+                console.error(e);
+                window.alert("Greška pri brisanju filma.");
+            } finally {
+                this.deleteLoading = false;
+            }
+        },
         async submitComment() {
             if (!this.newComment.trim()) return;
 
@@ -197,6 +264,11 @@ export default {
                 this.loading = false;
             }
         },
+        onCommentDeleted(deletedId) {
+            this.comments = this.comments.filter(c => c.id !== deletedId);
+            console.log("KLIKNUTO DUGME");
+        }
+
     },
     // mounted() {
     //   this.fetchMovie();
@@ -341,74 +413,95 @@ export default {
 }
 
 .add-comment {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(157, 204, 255, 0.08);
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(157, 204, 255, 0.08);
 }
 
 .add-comment h3 {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.1rem;
-  color: #e6f0ff;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+    color: #e6f0ff;
 }
 
 .comment-textarea {
-  width: 50vw;
-  background: #14181c;
-  color: #eaeaea;
-  border: 1px solid #2a2f36;
-  border-radius: 10px;
-  padding: 0.9rem 0.5rem;
-  outline: none;
-  resize: vertical;
-  transition: border-color .15s ease, box-shadow .15s ease;
+    width: 50vw;
+    background: #14181c;
+    color: #eaeaea;
+    border: 1px solid #2a2f36;
+    border-radius: 10px;
+    padding: 0.9rem 0.5rem;
+    outline: none;
+    resize: vertical;
+    transition: border-color .15s ease, box-shadow .15s ease;
 }
 
 .comment-textarea:focus {
-  border-color: #1db954;
-  box-shadow: 0 0 0 2px rgba(29,185,84,.18);
+    border-color: #1db954;
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, .18);
 }
 
 .actions {
-  margin-top: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: center;
-  padding-bottom: 2rem;
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    padding-bottom: 2rem;
 }
 
 .btn-submit {
-  background: #1db954;
-  color: #0b0f14;
-  border: none;
-  border-radius: 999px;
-  padding: 0.55rem 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform .05s ease, box-shadow .15s ease;
+    background: #1db954;
+    color: #0b0f14;
+    border: none;
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .05s ease, box-shadow .15s ease;
 }
 
 .btn-submit:disabled {
-  opacity: .6;
-  cursor: not-allowed;
+    opacity: .6;
+    cursor: not-allowed;
 }
 
 .btn-submit:hover:not(:disabled) {
-  box-shadow: 0 6px 18px rgba(29,185,84,.25);
-  transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(29, 185, 84, .25);
+    transform: translateY(-1px);
 }
 
 .error-inline {
-  color: #ff6b6b;
-  font-size: .95rem;
+    color: #ff6b6b;
+    font-size: .95rem;
 }
 
 .login-hint {
-  margin-top: 1rem;
-  color: #9ab;
-  font-size: 0.95rem;
-  padding-bottom: 2rem;
+    margin-top: 1rem;
+    color: #9ab;
+    font-size: 0.95rem;
+    padding-bottom: 2rem;
 }
 
+.btn-danger {
+    margin-top: .5rem;
+    background: #e74c3c;
+    color: #0b0f14;
+    border: none;
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .05s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.btn-danger:hover {
+    box-shadow: 0 6px 18px rgba(231, 76, 60, .25);
+    transform: translateY(-1px);
+}
+
+.btn-danger:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
 </style>

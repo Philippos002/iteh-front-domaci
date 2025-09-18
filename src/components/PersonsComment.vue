@@ -11,6 +11,11 @@
         <span class="movie">{{ movie }}</span>
         <span class="sep">•</span>
         <span class="time">{{ timeAgo }}</span>
+
+        <!-- X button (admin/moderator only) -->
+        <button v-if="canDelete" class="delete-btn" :disabled="deleting" @click="deleteComment">
+          ×
+        </button>
       </div>
 
       <p class="comment-text">{{ content }}</p>
@@ -18,24 +23,68 @@
   </article>
 </template>
 
+
 <script>
+import { useAuthStore } from "@/stores/auth";
+import { computed, ref } from "vue";
+import axios from "axios";
+
 export default {
   name: "PersonsComment",
   props: {
-    author: { type: String, required: true },     // username autora komentara
-    movie: { type: String, required: true },      // naslov filma koji je komentarisao
-    time: { type: String, required: true },       // ISO string ili timestamp
-    content: { type: String, required: true },    // sam komentar
+    id: { type: Number, required: true },        
+    author: { type: String, required: true },
+    movie: { type: String, required: true },
+    time: { type: String, required: true },
+    content: { type: String, required: true },
+  },
+  setup(props, { emit }) {
+    const auth = useAuthStore();
+    const deleting = ref(false);
+
+    const canDelete = computed(
+      () => auth.isLoggedIn && (auth.role === "admin" || auth.role === "moderator")
+    );
+
+    const deleteComment = async () => {
+      if (!props.id) {
+        window.alert("Nedostaje ID komentara."); // helpful in dev
+        return;
+      }
+      deleting.value = true;
+      try {
+        const { data } = await axios.post(
+          "http://localhost/backend/delete_comment.php",
+          { id: props.id },
+          { withCredentials: true }
+        );
+
+        if (data?.success) {
+          window.alert(data.message || "Komentar je obrisan.");
+          emit("deleted", props.id);    // ✅ tell parent to remove it
+        } else {
+          window.alert(data?.message || "Brisanje nije uspelo.");
+        }
+      } catch (e) {
+        console.error(e);
+        window.alert("Greška pri brisanju komentara.");
+      } finally {
+        deleting.value = false;
+      }
+    };
+
+    return { canDelete, deleteComment, deleting };
   },
   computed: {
     initials() {
-      // uzmemo prva slova username-a (ili reči u imenu), radi avatara
       if (!this.author) return "?";
       const parts = this.author.replace(/[_.-]/g, " ").split(" ");
-      return (parts[0][0] || "").toUpperCase() + (parts[1] ? (parts[1][0] || "").toUpperCase() : "");
+      return (
+        (parts[0][0] || "").toUpperCase() +
+        (parts[1] ? (parts[1][0] || "").toUpperCase() : "")
+      );
     },
     timeAgo() {
-      // jednostavan "time since" (npr. "2h", "3d", ili datum)
       const t = new Date(this.time);
       if (isNaN(t)) return this.time;
       const now = new Date();
@@ -47,12 +96,12 @@ export default {
       if (hrs < 24) return `${hrs}h`;
       const days = Math.floor(hrs / 24);
       if (days < 30) return `${days}d`;
-      // za starije prikazati lokalni datum
       return t.toLocaleDateString();
     },
   },
 };
 </script>
+
 
 <style scoped>
 .comment {
@@ -99,7 +148,8 @@ export default {
 }
 
 .movie {
-  color: #a8d08a; /* blagi zeleni akcenat */
+  color: #a8d08a;
+  /* blagi zeleni akcenat */
   font-weight: 600;
 }
 
@@ -116,5 +166,26 @@ export default {
   margin: 0;
   color: #ddd;
   line-height: 1.4;
+}
+
+.delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.delete-btn:hover {
+  color: #ff1f1f;
+  transform: scale(1.15);
+}
+
+.delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
