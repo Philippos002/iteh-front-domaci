@@ -127,4 +127,12 @@ export const comments = [
     time: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
     content: "Fica je jedan od najzabavnijih junaka jugoslovenskog filma.",
   },
+  {
+    id: 17,
+    author: "ana_film",
+    movieId: 11,
+    movie: "Profesionalac",
+    time: new Date(Date.now() - 1000 * 60 * 14).toISOString(),
+    content: "PADA PADA PADA PADA, PADA PADA PADA PADA, ŠTA TO PADA - PADA VLADA",
+  },
 ];
