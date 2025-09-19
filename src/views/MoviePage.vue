@@ -38,9 +38,16 @@
             </div>
 
             <div v-if="displayedComments.length" class="comments-list">
-                <PersonsComment v-for="(c, idx) in displayedComments" :key="c.id || idx" :id="c.id" :author="c.author"
-                    :movie="c.movieName" :time="c.timeItwasCommented" :content="c.content"
-                    @deleted="onCommentDeleted" />
+                <PersonsComment 
+                v-for="(c, idx) in displayedComments" 
+                :key="c.id || idx" 
+                :id="c.id" 
+                :author="c.author"
+                :movie="c.movie" 
+                :time="c.time" 
+                :content="c.content"
+                @deleted="onCommentDeleted" 
+                />
 
             </div>
 
@@ -91,6 +98,9 @@ import profesionalac from "@/img/profesionalac.jpg";
 import rane from "@/img/rane.jpg";
 import variola from "@/img/variola.jpg";
 
+import { comments } from "@/data/comments.js";
+import { movies } from "@/data/movies.js";
+
 export default {
     name: "MoviePage",
     components: { Header, Footer, PersonsComment },
@@ -108,126 +118,8 @@ export default {
             submitError: "",
             deleteLoading: false,
             movie: null,
-            movies: [{
-                        id: 1,
-                        title: "Maratonci trče počasni krug",
-                        year: 1982,
-                        poster: maratonci,
-                        genre: "Komedija, Drama",
-                        description: "Kultna crna komedija o pogrebničkoj porodici Topalović i njihovim sukobima, koja je postala simbol srpske kinematografije."
-                    },
-                    {
-                        id: 2,
-                        title: "Ko to tamo peva",
-                        year: 1980,
-                        poster: kototamopeva,
-                        genre: "Komedija, Drama",
-                        description: "Putovanje starim autobusom kroz Srbiju uoči Drugog svetskog rata, ispunjeno humorom, muzikom i alegorijom društva tog doba."
-                    },
-                    {
-                        id: 3,
-                        title: "Balkanski špijun",
-                        year: 1984,
-                        poster: balkanski,
-                        genre: "Komedija, Drama",
-                        description: "Satira o paranoji i totalitarnim režimima, kroz priču o čoveku koji sumnja da mu je podstanar strani špijun."
-                    },
-                    {
-                        id: 4,
-                        title: "Otac na službenom putu",
-                        year: 1985,
-                        poster: otac,
-                        genre: "Drama",
-                        description: "Film Emira Kusturice nagrađen u Kanu, prikazuje detinjstvo dečaka u Jugoslaviji pedesetih godina i političke progone tog vremena."
-                    },
-                    {
-                        id: 5,
-                        title: "Lepa sela lepo gore",
-                        year: 1996,
-                        poster: lepasela,
-                        genre: "Drama, Ratni",
-                        description: "Potresna priča o prijateljstvu, ratu i razaranju, kroz sudbinu mladih ljudi u vihoru ratnih devedesetih."
-                    },
-                    {
-                        id: 6,
-                        title: "Rane",
-                        year: 1998,
-                        poster: rane,
-                        genre: "Krimi, Drama",
-                        description: "Realističan prikaz beogradskog podzemlja devedesetih, kroz priču o dvojici tinejdžera koji žele da postanu kriminalci."
-                    },
-                    {
-                        id: 7,
-                        title: "Mi nismo anđeli",
-                        year: 1992,
-                        poster: minismoandjeli,
-                        genre: "Komedija, Fantazija",
-                        description: "Humoristična priča o ljubavi, iskušenjima i izborima, gde đavo i anđeo prate junake i utiču na njihove odluke."
-                    },
-                    {
-                        id: 8,
-                        title: "Kad porastem biću kengur",
-                        year: 2004,
-                        poster: kengur,
-                        genre: "Komedija, Drama",
-                        description: "Savremena urbana komedija o životu u beogradskom naselju, isprepletana ljubavnim pričama i svakodnevicom mladih."
-                    },
-                    {
-                        id: 9,
-                        title: "Montevideo, Bog te video!",
-                        year: 2010,
-                        poster: montevideo,
-                        genre: "Drama, Sport",
-                        description: "Inspirativna priča o prvoj fudbalskoj reprezentaciji Jugoslavije i njihovom putu na Svetsko prvenstvo u Montevideu 1930. godine."
-                    },
-                    {
-                        id: 10,
-                        title: "Nacionalna klasa",
-                        year: 1979,
-                        poster: nacionalna,
-                        genre: "Komedija, Drama, Sport",
-                        description: "Priča o mladiću 'Fici' i njegovoj strasti prema automobilskim trkama, kao i pokušaju da izbegne vojnu službu."
-                    },
-                    {
-                        id: 11,
-                        title: "Profesionalac",
-                        year: 2003,
-                        poster: profesionalac,
-                        genre: "Drama, Komedija",
-                        description: "Dirljiva i duhovita drama o susretu bivšeg disidenta i tajnog policajca koji ga je godinama pratio."
-                    },
-                    {
-                        id: 12,
-                        title: "Variola Vera",
-                        year: 1982,
-                        poster: variola,
-                        genre: "Drama, Triler",
-                        description: "Napeti triler inspirisan stvarnom epidemijom variole vere u Jugoslaviji 1972. godine, smešten u izolovanu bolnicu."
-                    },
-            ],
-            comments: [
-                {
-                    id: 1,
-                    author: "Bojan",
-                    movieName: "Inception",
-                    timeItwasCommented: "3d",
-                    content: "Odličan film, treći put gledam i još uvek me oduva!"
-                },
-                {
-                    id: 2,
-                    author: "Mina",
-                    movieName: "Inception",
-                    timeItwasCommented: "2h",
-                    content: "Hans Zimmer soundtrack 🔥"
-                },
-                {
-                    id: 3,
-                    author: "Nikola",
-                    movieName: "The Godfather",
-                    timeItwasCommented: "1w",
-                    content: "Klasik nad klasicima."
-                }
-            ],
+            movies,
+            comments: [],
         };
     },
     computed: {
@@ -236,18 +128,16 @@ export default {
         },
         titleFromSlug() {
             try {
-                const spaced = this.slug.replace(/-/g, " ");
-                return decodeURIComponent(spaced);
+            const spaced = this.slug.replace(/-/g, " ");
+            return decodeURIComponent(spaced);
             } catch {
-                return this.slug.replace(/-/g, " ");
+            return this.slug.replace(/-/g, " ");
             }
         },
-        // Komentari samo za izabrani film
         displayedComments() {
-            const title = (this.movie?.title || this.titleFromSlug || "").toLowerCase();
-            return this.comments.filter(
-                (c) => (c.movieName || "").toLowerCase() === title
-            );
+            const movieId = parseInt(this.$route.params.id);
+            if (isNaN(movieId)) return [];
+            return (this.comments || []).filter(c => Number(c.movieId) === movieId);
         },
     },
     methods: {
@@ -341,9 +231,16 @@ export default {
 
     },
     created() {
-                const movieId = parseInt(this.$route.params.id);
-                this.movie = this.movies.find(m => m.id === movieId) || null;
-            }
+        const movieId = parseInt(this.$route.params.id);
+        
+        this.movie = this.movies.find(m => m.id === movieId) || null;
+
+        console.log("MoviePage created: movieId=", movieId, "found movie=", this.movie);
+
+        this.comments = comments.filter(c => Number(c.movieId) === movieId);
+        console.log("Comments loaded for movie:", this.comments);
+    },
+
 
     // mounted() {
     //   this.fetchMovie();

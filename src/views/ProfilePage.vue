@@ -52,6 +52,7 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import PersonsComment from "@/components/PersonsComment.vue";
+import { comments } from "@/data/comments.js";
 
 export default {
   name: "ProfilePage",
@@ -76,22 +77,7 @@ export default {
   methods: {
     fetchProfileAndComments() {
       setTimeout(() => {
-        this.comments = [
-          {
-            id: 1,
-            author: "marko92",
-            movie: "The Shawshank Redemption",
-            time: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-            content: "Ovo je jedan od onih filmova koje mogu da gledam iznova i iznova.",
-          },
-          {
-            id: 2,
-            author: "marko92",
-            movie: "Inception",
-            time: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
-            content: "Christopher Nolan u svom elementu.",
-          },
-        ];
+        this.comments = comments.filter((c) => c.author === this.user.username);
         this.loading = false;
       }, 600);
     },

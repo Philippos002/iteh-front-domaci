@@ -36,6 +36,8 @@ import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import OneMovieInList from "@/components/OneMovieInList.vue";
 
+import { movies } from "@/data/movies.js";
+
 export default {
     name: "MovieList",
     components: { Header, Footer, OneMovieInList },
@@ -45,20 +47,7 @@ export default {
             titleSort: "placeholder",
             yearSort: "placeholder",
             searchQuery: "",
-            movies: [
-                        { id: 1, title: "Maratonci trče počasni krug", year: 1982, poster: "../src/img/maratonci.jpg" },
-                        { id: 2, title: "Ko to tamo peva", year: 1980, poster: "../src/img/kototamopeva.jpg" },
-                        { id: 3, title: "Balkanski špijun", year: 1984, poster: "../src/img/balkanski.jpg" },
-                        { id: 4, title: "Otac na službenom putu", year: 1985, poster: "../src/img/otac.jpg" },
-                        { id: 5, title: "Lepa sela lepo gore", year: 1996, poster: "../src/img/lepasela.jpg" },
-                        { id: 6, title: "Rane", year: 1998, poster: "../src/img/rane.jpg" },
-                        { id: 7, title: "Mi nismo anđeli", year: 1992, poster: "../src/img/minismoandjeli.jpg" },
-                        { id: 8, title: "Kad porastem biću kengur", year: 2004, poster: "../src/img/kengur.jpg" },
-                        { id: 9, title: "Montevideo, Bog te video!", year: 2010, poster: "../src/img/montevideo.jpg" },
-                        { id: 10, title: "Nacionalna klasa", year: 1979, poster: "../src/img/nacionalna.jpg" },
-                        { id: 11, title: "Profesionalac", year: 2003, poster: "../src/img/profesionalac.jpg" },
-                        { id: 12, title: "Variola Vera", year: 1982, poster: "../src/img/variola.jpg" },
-            ],
+            movies,
         };
     },
     methods: {
