@@ -33,7 +33,7 @@
         <div class="dropdown-toggle" @click.stop="toggleDropdown">▼</div>
 
         <!-- Dropdown meni -->
-        <div v-if="showProfileMenu && auth.isLoggedIn" class="profile-dropdown">
+        <div v-if="showProfileMenu && !auth.isLoggedIn" class="profile-dropdown">
           <button class="dropdown-item" @click="logout">Odjavi se</button>
         </div>
       </div>
@@ -57,7 +57,7 @@ export default {
   },
   setup() {
     const auth = useAuthStore();
-    const canAddMovie = computed(() => auth.isLoggedIn && (auth.role === "admin"));
+    const canAddMovie = true;
     return { auth, canAddMovie };
   },
   methods: {
@@ -177,17 +177,17 @@ export default {
 
 .profile-dropdown {
   position: absolute;
-  top: 80px;
-  /* distance from icon */
+  top: 100%;
   right: 0;
   background-color: #2b2b2b;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  min-width: 6vw;
+  min-width: 8rem;
   z-index: 1001;
 }
+
 
 .dropdown-item {
   padding: 0.5rem 1rem;
@@ -211,21 +211,13 @@ export default {
   color: #1db954;
 }
 
-img {
-  height: 14px;
-  width: 14px;
-}
-
-.pages img {
-  height: 35px;
-  width: 35px;
-}
-
-.profile-menu-wrapper,
 .profile-icon {
-  height: 3vh;
-  width: 3vw;
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  display: block; 
 }
+
 
 .dropdown-toggle {
   margin-left: 0.4rem;

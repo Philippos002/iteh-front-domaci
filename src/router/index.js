@@ -29,6 +29,7 @@ const routes = [
   { path: "/movie/:title", name: "Movie", component: MoviePage, props: true},
   { path: '/help', name: 'Help', component: HelpPage},
   { path: "/add-movie", name: "AddMovie", component: AddMoviePage},
+  { path: "/movie/:slug/:id", name: "Movie", component: MoviePage, props: true,}
 ];
 
 const router = createRouter({

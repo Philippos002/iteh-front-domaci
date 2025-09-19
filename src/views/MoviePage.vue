@@ -31,7 +31,6 @@
             <div v-else class="state">Film nije pronađen.</div>
         </div>
 
-        <!-- Comments (Letterboxd-like panel) -->
         <section v-if="movie" class="comments-section">
             <div class="comments-header">
                 <h2>Komentari</h2>
@@ -48,7 +47,7 @@
             <div v-else class="state muted">Još nema komentara za ovaj film.</div>
         </section>
 
-        <div v-if="auth.isLoggedIn" class="add-comment">
+        <div v-if="!auth.isLoggedIn" class="add-comment">
             <h3>Dodaj komentar</h3>
 
             <textarea v-model="newComment" class="comment-textarea" placeholder="Napiši svoj utisak o filmu…"
@@ -63,7 +62,6 @@
             </div>
         </div>
 
-        <!-- Ako nije ulogovan, možeš prikazati info -->
         <div v-else class="login-hint">
             Prijavi se da bi ostavio komentar.
         </div>
@@ -75,16 +73,30 @@
 import axios from "axios";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import PersonsComment from "@/components/PersonsComment.vue"; // 👈 import component
+import PersonsComment from "@/components/PersonsComment.vue"; 
 import inception from "../img/inception.jpg";
 import { useAuthStore } from "@/stores/auth";
 import { computed } from "vue";
+
+import maratonci from "@/img/maratonci.jpg";
+import balkanski from "@/img/balkanski.jpg";
+import kengur from "@/img/kengur.jpg";
+import kototamopeva from "@/img/kototamopeva.jpg";
+import lepasela from "@/img/lepasela.jpg";
+import minismoandjeli from "@/img/minismoandjeli.jpg";
+import montevideo from "@/img/montevideo.jpg";
+import nacionalna from "@/img/nacionalna.jpg";
+import otac from "@/img/otac.jpg";
+import profesionalac from "@/img/profesionalac.jpg";
+import rane from "@/img/rane.jpg";
+import variola from "@/img/variola.jpg";
+
 export default {
     name: "MoviePage",
     components: { Header, Footer, PersonsComment },
     setup() {
         const auth = useAuthStore();
-        const canDelete = computed(() => auth.isLoggedIn && auth.role === "admin");
+        const canDelete = true;
         return { auth, canDelete };
     },
     data() {
@@ -95,17 +107,104 @@ export default {
             submitLoading: false,
             submitError: "",
             deleteLoading: false,
-            // movie: null,
-            movie: {
-                title: "Inception",
-                genre: "Thriller",
-                year: "2015",
-                description:
-                    "Blasdiqewdkaoksdosmdnvowjfiqjdasd aKSDI WIQEJFIF0QKWD KQasdkoasd",
-                poster: inception,
-            },
-
-            // 🔽 Demo comments (replace with backend later if needed)
+            movie: null,
+            movies: [{
+                        id: 1,
+                        title: "Maratonci trče počasni krug",
+                        year: 1982,
+                        poster: maratonci,
+                        genre: "Komedija, Drama",
+                        description: "Kultna crna komedija o pogrebničkoj porodici Topalović i njihovim sukobima, koja je postala simbol srpske kinematografije."
+                    },
+                    {
+                        id: 2,
+                        title: "Ko to tamo peva",
+                        year: 1980,
+                        poster: kototamopeva,
+                        genre: "Komedija, Drama",
+                        description: "Putovanje starim autobusom kroz Srbiju uoči Drugog svetskog rata, ispunjeno humorom, muzikom i alegorijom društva tog doba."
+                    },
+                    {
+                        id: 3,
+                        title: "Balkanski špijun",
+                        year: 1984,
+                        poster: balkanski,
+                        genre: "Komedija, Drama",
+                        description: "Satira o paranoji i totalitarnim režimima, kroz priču o čoveku koji sumnja da mu je podstanar strani špijun."
+                    },
+                    {
+                        id: 4,
+                        title: "Otac na službenom putu",
+                        year: 1985,
+                        poster: otac,
+                        genre: "Drama",
+                        description: "Film Emira Kusturice nagrađen u Kanu, prikazuje detinjstvo dečaka u Jugoslaviji pedesetih godina i političke progone tog vremena."
+                    },
+                    {
+                        id: 5,
+                        title: "Lepa sela lepo gore",
+                        year: 1996,
+                        poster: lepasela,
+                        genre: "Drama, Ratni",
+                        description: "Potresna priča o prijateljstvu, ratu i razaranju, kroz sudbinu mladih ljudi u vihoru ratnih devedesetih."
+                    },
+                    {
+                        id: 6,
+                        title: "Rane",
+                        year: 1998,
+                        poster: rane,
+                        genre: "Krimi, Drama",
+                        description: "Realističan prikaz beogradskog podzemlja devedesetih, kroz priču o dvojici tinejdžera koji žele da postanu kriminalci."
+                    },
+                    {
+                        id: 7,
+                        title: "Mi nismo anđeli",
+                        year: 1992,
+                        poster: minismoandjeli,
+                        genre: "Komedija, Fantazija",
+                        description: "Humoristična priča o ljubavi, iskušenjima i izborima, gde đavo i anđeo prate junake i utiču na njihove odluke."
+                    },
+                    {
+                        id: 8,
+                        title: "Kad porastem biću kengur",
+                        year: 2004,
+                        poster: kengur,
+                        genre: "Komedija, Drama",
+                        description: "Savremena urbana komedija o životu u beogradskom naselju, isprepletana ljubavnim pričama i svakodnevicom mladih."
+                    },
+                    {
+                        id: 9,
+                        title: "Montevideo, Bog te video!",
+                        year: 2010,
+                        poster: montevideo,
+                        genre: "Drama, Sport",
+                        description: "Inspirativna priča o prvoj fudbalskoj reprezentaciji Jugoslavije i njihovom putu na Svetsko prvenstvo u Montevideu 1930. godine."
+                    },
+                    {
+                        id: 10,
+                        title: "Nacionalna klasa",
+                        year: 1979,
+                        poster: nacionalna,
+                        genre: "Komedija, Drama, Sport",
+                        description: "Priča o mladiću 'Fici' i njegovoj strasti prema automobilskim trkama, kao i pokušaju da izbegne vojnu službu."
+                    },
+                    {
+                        id: 11,
+                        title: "Profesionalac",
+                        year: 2003,
+                        poster: profesionalac,
+                        genre: "Drama, Komedija",
+                        description: "Dirljiva i duhovita drama o susretu bivšeg disidenta i tajnog policajca koji ga je godinama pratio."
+                    },
+                    {
+                        id: 12,
+                        title: "Variola Vera",
+                        year: 1982,
+                        poster: variola,
+                        genre: "Drama, Triler",
+                        description: "Napeti triler inspirisan stvarnom epidemijom variole vere u Jugoslaviji 1972. godine, smešten u izolovanu bolnicu."
+                    },
+            ],
             comments: [
                 {
                     id: 1,
@@ -143,7 +242,7 @@ export default {
                 return this.slug.replace(/-/g, " ");
             }
         },
-        // Only comments for the current movie
+        // Komentari samo za izabrani film
         displayedComments() {
             const title = (this.movie?.title || this.titleFromSlug || "").toLowerCase();
             return this.comments.filter(
@@ -152,47 +251,18 @@ export default {
         },
     },
     methods: {
-        async onDeleteMovie() {
+         async onDeleteMovie() {
             if (!this.movie?.title) return;
 
             this.deleteLoading = true;
             try {
-                // If your backend prefers DELETE with query param, you can use axios.delete
-                // Here is a POST example (common for PHP endpoints)
                 const { data } = await axios.post(
                     "http://localhost/backend/delete_movie.php",
-                    { title: this.movie.title }, // deleting by movie title as you requested
+                    { title: this.movie.title }, 
                     { withCredentials: true }
                 );
 
                 if (data?.success) {
-                    // success -> pop-up/alert, then route home
-                    window.alert(data?.message || "Film je uspešno obrisan.");
-                    this.$router.push("/");
-                } else {
-                    window.alert(data?.message || "Brisanje nije uspelo.");
-                }
-            } catch (e) {
-                console.error(e);
-                window.alert("Greška pri brisanju filma.");
-            } finally {
-                this.deleteLoading = false;
-            }
-        }, async onDeleteMovie() {
-            if (!this.movie?.title) return;
-
-            this.deleteLoading = true;
-            try {
-                // If your backend prefers DELETE with query param, you can use axios.delete
-                // Here is a POST example (common for PHP endpoints)
-                const { data } = await axios.post(
-                    "http://localhost/backend/delete_movie.php",
-                    { title: this.movie.title }, // deleting by movie title as you requested
-                    { withCredentials: true }
-                );
-
-                if (data?.success) {
-                    // success -> pop-up/alert, then route home
                     window.alert(data?.message || "Film je uspešno obrisan.");
                     this.$router.push("/");
                 } else {
@@ -270,6 +340,11 @@ export default {
         }
 
     },
+    created() {
+                const movieId = parseInt(this.$route.params.id);
+                this.movie = this.movies.find(m => m.id === movieId) || null;
+            }
+
     // mounted() {
     //   this.fetchMovie();
     // },
@@ -281,7 +356,6 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #14181c;
-    /* Letterboxd dark */
     color: #eaeaea;
     min-height: 100vh;
     align-items: center;
@@ -368,7 +442,6 @@ export default {
     max-width: 600px;
 }
 
-/* --- Comments panel --- */
 .comments-section {
     width: 100%;
     max-width: 1000px;

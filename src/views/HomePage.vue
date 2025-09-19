@@ -23,7 +23,7 @@
             </div>
             <div class="movies-grid">
                 <OneMovieInList v-for="movie in sortedMovies" :key="movie.id" :title="movie.title" :year="movie.year"
-                    :poster="movie.poster" class="movie-card" @click="goToMovie(movie.title)" />
+                    :poster="movie.poster" class="movie-card" @click="goToMovie(movie)" />
             </div>
         </div>
 
@@ -46,12 +46,18 @@ export default {
             yearSort: "placeholder",
             searchQuery: "",
             movies: [
-                { id: 1, title: "The Shawshank Redemption", year: 1994, poster: "../src/img/shawshank.jpg" },
-                { id: 2, title: "The Godfather", year: 1972, poster: "../src/img/kum.jpg" },
-                { id: 3, title: "Inception", year: 2010, poster: "../src/img/inception.jpg" },
-                { id: 4, title: "Fight Club", year: 1999, poster: "../src/img/fight.jpg" },
-                { id: 5, title: "Interstellar", year: 2014, poster: "../src/img/inter.jpg" },
-                { id: 6, title: "The Dark Knight", year: 2008, poster: "https://via.placeholder.com/200x300?text=Dark+Knight" },
+                        { id: 1, title: "Maratonci trče počasni krug", year: 1982, poster: "../src/img/maratonci.jpg" },
+                        { id: 2, title: "Ko to tamo peva", year: 1980, poster: "../src/img/kototamopeva.jpg" },
+                        { id: 3, title: "Balkanski špijun", year: 1984, poster: "../src/img/balkanski.jpg" },
+                        { id: 4, title: "Otac na službenom putu", year: 1985, poster: "../src/img/otac.jpg" },
+                        { id: 5, title: "Lepa sela lepo gore", year: 1996, poster: "../src/img/lepasela.jpg" },
+                        { id: 6, title: "Rane", year: 1998, poster: "../src/img/rane.jpg" },
+                        { id: 7, title: "Mi nismo anđeli", year: 1992, poster: "../src/img/minismoandjeli.jpg" },
+                        { id: 8, title: "Kad porastem biću kengur", year: 2004, poster: "../src/img/kengur.jpg" },
+                        { id: 9, title: "Montevideo, Bog te video!", year: 2010, poster: "../src/img/montevideo.jpg" },
+                        { id: 10, title: "Nacionalna klasa", year: 1979, poster: "../src/img/nacionalna.jpg" },
+                        { id: 11, title: "Profesionalac", year: 2003, poster: "../src/img/profesionalac.jpg" },
+                        { id: 12, title: "Variola Vera", year: 1982, poster: "../src/img/variola.jpg" },
             ],
         };
     },
@@ -73,15 +79,11 @@ export default {
                 .trim()
                 .replace(/\s+/g, "-");
         },
-        goToMovie(title) {
-            const realTitleValue = title;
-            const slug = this.slugify(title);
+        goToMovie(movie) {
+            const slug = this.slugify(movie.title);
             this.$router.push({
-                name: 'Movie',
-                params: {
-                    title: slug,
-                    realTitle: realTitleValue
-                }
+            name: "Movie",
+            params: { slug, id: movie.id }
             });
         }
     },
